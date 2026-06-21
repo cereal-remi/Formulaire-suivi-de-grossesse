@@ -478,7 +478,7 @@ function renderResult() {
   if (clinicKey === 'gyneco') {
     bannerInner = `
       <div class="result-eyebrow">Suivi recommandé : Gynécologie</div>
-      <p class="result-message">Merci d'avoir pris le temps de répondre à nos questions. À la suite de ce questionnaire, on identifie que votre grossesse nécessite un suivi particulier qui devra être fait par l'équipe de gynécologue. Vous pouvez donc contacter la clinique de gynécologie de l'hôpital Pierre-Boucher (${GYNECO_CLINIC.address}, ${GYNECO_CLINIC.phone}) afin d'obtenir un 1er rendez-vous.</p>
+      <p class="result-message">Merci d'avoir pris le temps de répondre à nos questions. À la suite de ce questionnaire, on identifie que votre grossesse nécessite un suivi par l'équipe de gynécologues. Vous pouvez donc contacter la clinique de gynécologie de l'hôpital Pierre-Boucher (${GYNECO_CLINIC.address}, ${GYNECO_CLINIC.phone}) afin d'obtenir un 1er rendez-vous.</p>
     `;
   } else {
     const clinicListHtml = OMNI_CLINICS.map(c =>
