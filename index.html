@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Formulaire de pré-évaluation de grossesse</title>
+<style>
+  :root {
+    --bg: #FAF8F5;
+    --panel: #FFFFFF;
+    --ink: #2B2B33;
+    --ink-soft: #5C5C68;
+    --line: #E4E0D8;
+    --accent: #8B6F5C;
+    --accent-soft: #F2E9E1;
+    --good: #4C7A5E;
+    --good-bg: #EAF3EC;
+    --warn: #B05A3A;
+    --warn-bg: #FBEDE6;
+    --radius: 10px;
+    --serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    line-height: 1.5;
+    padding: 32px 16px 80px;
+  }
+
+  .wrap {
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  header.page-head {
+    margin-bottom: 28px;
+  }
+
+  header.page-head h1 {
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: 1.6rem;
+    margin: 0 0 6px;
+    color: var(--ink);
+  }
+
+  header.page-head p {
+    margin: 0;
+    color: var(--ink-soft);
+    font-size: 0.95rem;
+  }
+
+  .progress-track {
+    height: 4px;
+    background: var(--line);
+    border-radius: 4px;
+    margin-top: 18px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--accent);
+    width: 0%;
+    transition: width 0.3s ease;
+  }
+  .progress-label {
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+    margin-top: 6px;
+    text-align: right;
+  }
+
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 28px 26px;
+  }
+
+  .q-block { display: none; }
+  .q-block.active { display: block; }
+
+  .q-eyebrow {
+    font-size: 0.78rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+
+  .q-text {
+    font-family: var(--serif);
+    font-size: 1.2rem;
+    line-height: 1.45;
+    margin: 0 0 22px;
+    color: var(--ink);
+  }
+
+  .choice-row {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+
+  .choice-btn {
+    flex: 1;
+    padding: 14px 16px;
+    border: 1.5px solid var(--line);
+    background: var(--panel);
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: var(--sans);
+    color: var(--ink);
+    cursor: pointer;
+    transition: all 0.15s ease;
+    text-align: center;
+  }
+  .choice-btn:hover { border-color: var(--accent); }
+  .choice-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .choice-btn.selected {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+    font-weight: 600;
+  }
+
+  .num-input {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1.5px solid var(--line);
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: var(--sans);
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+  .num-input:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .input-hint {
+    font-size: 0.82rem;
+    color: var(--ink-soft);
+    margin-top: 6px;
+  }
+
+  .nav-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 26px;
+  }
+
+  .btn-ghost {
+    background: none;
+    border: none;
+    color: var(--ink-soft);
+    font-size: 0.92rem;
+    cursor: pointer;
+    padding: 8px 4px;
+  }
+  .btn-ghost:hover { color: var(--ink); }
+  .btn-ghost:disabled { opacity: 0; pointer-events: none; }
+
+  .btn-primary {
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 26px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: var(--sans);
+  }
+  .btn-primary:hover { opacity: 0.92; }
+  .btn-primary:disabled { background: var(--line); cursor: not-allowed; }
+
+  /* Intro screen */
+  .intro h2 {
+    font-family: var(--serif);
+    font-size: 1.3rem;
+    margin: 0 0 14px;
+  }
+  .intro p { color: var(--ink-soft); margin: 0 0 14px; }
+  .intro ul { color: var(--ink-soft); padding-left: 20px; margin: 0 0 22px; }
+  .intro li { margin-bottom: 6px; }
+
+  /* Result screen */
+  .result-banner {
+    border-radius: var(--radius);
+    padding: 24px 26px;
+    margin-bottom: 22px;
+  }
+  .result-banner.gyneco { background: var(--warn-bg); border: 1px solid #E3C4B3; }
+  .result-banner.omni { background: var(--good-bg); border: 1px solid #C7DBCC; }
+
+  .result-eyebrow {
+    font-size: 0.78rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .gyneco .result-eyebrow { color: var(--warn); }
+  .omni .result-eyebrow { color: var(--good); }
+
+  .result-clinic-name {
+    font-family: var(--serif);
+    font-size: 1.5rem;
+    margin: 0 0 14px;
+    color: var(--ink);
+  }
+
+  .clinic-detail-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+  }
+  .clinic-detail-label {
+    color: var(--ink-soft);
+    min-width: 80px;
+    flex-shrink: 0;
+  }
+
+  .summary-title {
+    font-family: var(--serif);
+    font-size: 1.1rem;
+    margin: 0 0 14px;
+    padding-top: 4px;
+  }
+
+  table.summary-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+  }
+  table.summary-table td {
+    padding: 10px 8px;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+  }
+  table.summary-table td:first-child {
+    color: var(--ink-soft);
+    width: 70%;
+    padding-right: 16px;
+  }
+  table.summary-table td:last-child {
+    font-weight: 600;
+    text-align: right;
+    white-space: nowrap;
+  }
+  .ans-oui { color: var(--warn); }
+  .ans-non { color: var(--ink); }
+
+  .action-row {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+  }
+  .btn-secondary {
+    flex: 1;
+    background: var(--panel);
+    border: 1.5px solid var(--line);
+    color: var(--ink);
+    border-radius: 8px;
+    padding: 12px 18px;
+    font-size: 0.92rem;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: var(--sans);
+  }
+  .btn-secondary:hover { border-color: var(--accent); }
+
+  footer.disclaimer {
+    margin-top: 24px;
+    font-size: 0.8rem;
+    color: var(--ink-soft);
+    text-align: center;
+    line-height: 1.5;
+  }
+
+  @media print {
+    body { background: white; padding: 0; }
+    .no-print { display: none !important; }
+    .card { border: none; padding: 0; }
+    .result-banner.gyneco, .result-banner.omni { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="page-head">
+    <h1>Pré-évaluation de suivi de grossesse</h1>
+    <p>Ce court questionnaire détermine si votre suivi doit être assuré par un médecin omnipraticien ou un gynécologue.</p>
+  </header>
+
+  <div class="card">
+
+    <!-- INTRO -->
+    <div class="q-block active intro" id="screen-intro">
+      <h2>Avant de commencer</h2>
+      <p>Vous allez répondre à 18 courtes questions sur vos antécédents médicaux et la grossesse en cours.</p>
+      <ul>
+        <li>Cela prend environ 3 minutes.</li>
+        <li>Aucune réponse n'est enregistrée ni transmise — tout reste sur votre appareil.</li>
+        <li>À la fin, vous recevrez le nom de la clinique à contacter ainsi qu'un résumé à imprimer ou sauvegarder pour votre rendez-vous.</li>
+      </ul>
+      <div class="nav-row">
+        <span></span>
+        <button class="btn-primary" onclick="goTo(1)">Commencer</button>
+      </div>
+    </div>
+
+    <!-- QUESTIONS injected here by JS -->
+    <div id="questions-container"></div>
+
+    <!-- RESULT -->
+    <div class="q-block" id="screen-result"></div>
+
+  </div>
+
+  <footer class="disclaimer no-print">
+    Cet outil offre une orientation générale et ne remplace pas l'avis d'un professionnel de la santé.
+  </footer>
+
+</div>
+
+<script>
+const QUESTIONS = [
+  {n:1, text:"Avez-vous eu une chirurgie bariatrique dans les 2 dernières années\u00a0?", type:"yn"},
+  {n:2, text:"Avez-vous déjà eu un diagnostic de pré-éclampsie avant 34 semaines de grossesse\u00a0?", type:"yn"},
+  {n:3, text:"Avez-vous déjà eu un diagnostic de pré-éclampsie ayant nécessité un traitement avec du sulfate de magnésium ou accompagné d'un HELLP\u00a0?", type:"yn"},
+  {n:4, text:"Avez-vous un diabète de type 1 ou un diabète de type 2\u00a0? (ne pas considérer le diabète gestationnel)", type:"yn"},
+  {n:5, text:"Si vous avez déjà fait une échographie pour votre grossesse actuelle, est-ce une grossesse gémellaire (jumeaux)\u00a0?", type:"yn"},
+  {n:6, text:"Avez-vous de l'hypertension artérielle pré-grossesse\u00a0?", type:"yn"},
+  {n:7, text:"Avez-vous de l'hyperthyroïdie activement traitée\u00a0?", type:"yn"},
+  {n:8, text:"Avez-vous un antécédent d'insuffisance cervicale ou de cerclage\u00a0?", type:"yn"},
+  {n:9, text:"Êtes-vous connue pour un lupus ou une collagénose\u00a0?", type:"yn"},
+  {n:10, text:"Êtes-vous connue pour une sclérose en plaques\u00a0?", type:"yn"},
+  {n:11, text:"Êtes-vous connue pour de l'insuffisance cardiaque\u00a0?", type:"yn"},
+  {n:12, text:"Êtes-vous connue pour un asthme sévère\u00a0?", type:"yn"},
+  {n:13, text:"Êtes-vous connue pour un VIH ou une hépatite avec charge virale détectable ou sous traitement\u00a0?", type:"yn"},
+  {n:14, text:"Êtes-vous connue pour une maladie osseuse sévère ou une mobilité réduite\u00a0?", type:"yn"},
+  {n:15, text:"Êtes-vous connue pour une maladie inflammatoire de l'intestin (Crohn / colite ulcéreuse) sévère\u00a0?", type:"yn"},
+  {n:16, text:"Êtes-vous connue pour une maladie rénale (insuffisance rénale, glomérulonéphrite)\u00a0?", type:"yn"},
+  {n:17, text:"Quel est votre poids\u00a0?", type:"num", unit:"kg", id:"poids"},
+  {n:18, text:"Quelle est votre taille\u00a0?", type:"num", unit:"m", id:"taille", hint:"Par exemple\u00a0: 1.65"}
+];
+
+// ---- Clinic info: replace placeholders below with real details ----
+const CLINICS = {
+  gyneco: {
+    name: "[NOM DE LA CLINIQUE DE GYNÉCOLOGIE]",
+    address: "[ADRESSE DE LA CLINIQUE DE GYNÉCOLOGIE]",
+    phone: "[TÉLÉPHONE]",
+    email: "[COURRIEL]"
+  },
+  omni: {
+    name: "[NOM DE LA CLINIQUE D'OMNIPRATICIEN]",
+    address: "[ADRESSE DE LA CLINIQUE D'OMNIPRATICIEN]",
+    phone: "[TÉLÉPHONE]",
+    email: "[COURRIEL]"
+  }
+};
+// ---------------------------------------------------------------------
+
+let current = 0; // 0 = intro
+const answers = {};
+const totalSteps = QUESTIONS.length;
+
+function buildQuestions() {
+  const container = document.getElementById('questions-container');
+  QUESTIONS.forEach((q, idx) => {
+    const block = document.createElement('div');
+    block.className = 'q-block';
+    block.id = 'screen-' + (idx + 1);
+
+    let inputHtml = '';
+    if (q.type === 'yn') {
+      inputHtml = `
+        <div class="choice-row">
+          <button type="button" class="choice-btn" data-val="oui" onclick="selectYN(${q.n}, 'oui', this)">Oui</button>
+          <button type="button" class="choice-btn" data-val="non" onclick="selectYN(${q.n}, 'non', this)">Non</button>
+        </div>`;
+    } else if (q.type === 'num') {
+      inputHtml = `
+        <input type="number" step="0.01" inputmode="decimal" class="num-input" id="input-${q.id}"
+          oninput="recordNum(${q.n}, '${q.id}', this.value)" placeholder="${q.unit}">
+        ${q.hint ? `<div class="input-hint">${q.hint}</div>` : ''}`;
+    }
+
+    block.innerHTML = `
+      <div class="q-eyebrow">Question ${q.n} sur ${totalSteps}</div>
+      <p class="q-text">${q.text}</p>
+      ${inputHtml}
+      <div class="nav-row">
+        <button class="btn-ghost" onclick="goTo(${idx})">&larr; Précédent</button>
+        <button class="btn-primary" id="next-${q.n}" onclick="goTo(${idx + 2})" disabled>Continuer</button>
+      </div>
+    `;
+    container.appendChild(block);
+  });
+}
+
+function selectYN(qn, val, btnEl) {
+  answers[qn] = val;
+  const row = btnEl.parentElement;
+  row.querySelectorAll('.choice-btn').forEach(b => b.classList.remove('selected'));
+  btnEl.classList.add('selected');
+  document.getElementById('next-' + qn).disabled = false;
+}
+
+function recordNum(qn, id, val) {
+  const num = parseFloat(val);
+  answers[qn] = isNaN(num) ? null : num;
+  document.getElementById('next-' + qn).disabled = (val === '' || isNaN(num) || num <= 0);
+}
+
+function updateProgress() {
+  let bar = document.getElementById('progress-bar-fill');
+  let label = document.getElementById('progress-bar-label');
+  if (current === 0 || current > totalSteps) {
+    if (bar) bar.parentElement.parentElement.style.display = 'none';
+    return;
+  }
+  if (!bar) return;
+  bar.parentElement.parentElement.style.display = 'block';
+  const pct = Math.round((current / totalSteps) * 100);
+  bar.style.width = pct + '%';
+  label.textContent = `${current} / ${totalSteps}`;
+}
+
+function goTo(stepIndex) {
+  document.querySelectorAll('.q-block').forEach(el => el.classList.remove('active'));
+  if (stepIndex === 0) {
+    document.getElementById('screen-intro').classList.add('active');
+    current = 0;
+  } else if (stepIndex <= totalSteps) {
+    document.getElementById('screen-' + stepIndex).classList.add('active');
+    current = stepIndex;
+  } else {
+    renderResult();
+    document.getElementById('screen-result').classList.add('active');
+    current = totalSteps + 1;
+  }
+  updateProgress();
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+function computeBMI() {
+  const poids = answers[17];
+  const taille = answers[18];
+  if (!poids || !taille || taille <= 0) return null;
+  return poids / (taille * taille);
+}
+
+function determineClinic() {
+  for (let i = 1; i <= 16; i++) {
+    if (answers[i] === 'oui') return 'gyneco';
+  }
+  const bmi = computeBMI();
+  if (bmi !== null && bmi >= 45) return 'gyneco';
+  return 'omni';
+}
+
+function renderResult() {
+  const clinicKey = determineClinic();
+  const clinic = CLINICS[clinicKey];
+  const bmi = computeBMI();
+  const bmiDisplay = bmi !== null ? bmi.toFixed(1) : 'N/D';
+  const today = new Date().toLocaleDateString('fr-CA', {year:'numeric', month:'long', day:'numeric'});
+
+  const bannerClass = clinicKey === 'gyneco' ? 'gyneco' : 'omni';
+  const eyebrowText = clinicKey === 'gyneco' ? 'Suivi recommandé' : 'Suivi recommandé';
+  const typeText = clinicKey === 'gyneco' ? 'Clinique de gynécologie' : 'Clinique d\'omnipraticien';
+
+  let rows = '';
+  QUESTIONS.forEach(q => {
+    if (q.type === 'yn') {
+      const val = answers[q.n] === 'oui' ? 'Oui' : 'Non';
+      const cls = answers[q.n] === 'oui' ? 'ans-oui' : 'ans-non';
+      rows += `<tr><td>${q.n}. ${q.text}</td><td class="${cls}">${val}</td></tr>`;
+    }
+  });
+  rows += `<tr><td>17. Indice de masse corporelle (IMC)</td><td>${bmiDisplay}</td></tr>`;
+
+  const resultScreen = document.getElementById('screen-result');
+  resultScreen.innerHTML = `
+    <div class="result-banner ${bannerClass}">
+      <div class="result-eyebrow">${eyebrowText}</div>
+      <p class="result-clinic-name">${typeText}</p>
+      <div class="clinic-detail-row"><span class="clinic-detail-label">Nom</span><span>${clinic.name}</span></div>
+      <div class="clinic-detail-row"><span class="clinic-detail-label">Adresse</span><span>${clinic.address}</span></div>
+      <div class="clinic-detail-row"><span class="clinic-detail-label">Téléphone</span><span>${clinic.phone}</span></div>
+      <div class="clinic-detail-row"><span class="clinic-detail-label">Courriel</span><span>${clinic.email}</span></div>
+    </div>
+
+    <p class="summary-title">Résumé de vos réponses — ${today}</p>
+    <table class="summary-table">
+      ${rows}
+    </table>
+
+    <div class="action-row no-print">
+      <button class="btn-secondary" onclick="window.print()">Imprimer / Sauvegarder en PDF</button>
+      <button class="btn-secondary" onclick="restart()">Recommencer</button>
+    </div>
+  `;
+}
+
+function restart() {
+  for (const k in answers) delete answers[k];
+  document.querySelectorAll('.choice-btn').forEach(b => b.classList.remove('selected'));
+  document.querySelectorAll('input[type="number"]').forEach(i => i.value = '');
+  document.querySelectorAll('[id^="next-"]').forEach(b => b.disabled = true);
+  goTo(0);
+}
+
+// Inject progress bar into header
+document.addEventListener('DOMContentLoaded', () => {
+  const head = document.querySelector('header.page-head');
+  const progWrap = document.createElement('div');
+  progWrap.innerHTML = `
+    <div class="progress-track"><div class="progress-fill" id="progress-bar-fill"></div></div>
+    <div class="progress-label" id="progress-bar-label">0 / ${totalSteps}</div>
+  `;
+  progWrap.style.display = 'none';
+  head.appendChild(progWrap);
+  buildQuestions();
+  updateProgress();
+});
+</script>
+
+</body>
+</html>
