@@ -303,11 +303,11 @@
     <!-- INTRO -->
     <div class="q-block active intro" id="screen-intro">
       <h2>Avant de commencer</h2>
-      <p>Vous allez répondre à 18 courtes questions sur vos antécédents médicaux et la grossesse en cours.</p>
+      <p>Vous êtes invité à répondre à 18 courtes questions sur vos antécédents médicaux et la grossesse en cours.</p>
       <ul>
         <li>Cela prend environ 3 minutes.</li>
         <li>Aucune réponse n'est enregistrée ni transmise — tout reste sur votre appareil.</li>
-        <li>À la fin, vous recevrez le nom de la clinique à contacter ainsi qu'un résumé à imprimer ou sauvegarder pour votre rendez-vous.</li>
+        <li>À la fin, vous recevrez le nom de la clinique à contacter ainsi qu'un résumé à imprimer ou sauvegarder pour votre premier rendez-vous.</li>
       </ul>
       <div class="nav-row">
         <span></span>
@@ -332,11 +332,11 @@
 <script>
 const QUESTIONS = [
   {n:1, text:"Avez-vous eu une chirurgie bariatrique dans les 2 dernières années\u00a0?", type:"yn"},
-  {n:2, text:"Avez-vous déjà eu un diagnostic de pré-éclampsie avant 34 semaines de grossesse\u00a0?", type:"yn"},
+  {n:2, text:"Lors d'une grossesse antérieure, avez-vous déjà eu un diagnostic de pré-éclampsie avant 34 semaines de grossesse\u00a0?", type:"yn"},
   {n:3, text:"Avez-vous déjà eu un diagnostic de pré-éclampsie ayant nécessité un traitement avec du sulfate de magnésium ou accompagné d'un HELLP\u00a0?", type:"yn"},
   {n:4, text:"Avez-vous un diabète de type 1 ou un diabète de type 2\u00a0? (ne pas considérer le diabète gestationnel)", type:"yn"},
   {n:5, text:"Si vous avez déjà fait une échographie pour votre grossesse actuelle, est-ce une grossesse gémellaire (jumeaux)\u00a0?", type:"yn"},
-  {n:6, text:"Avez-vous de l'hypertension artérielle pré-grossesse\u00a0?", type:"yn"},
+  {n:6, text:"Êtes-vous connu pour de l'hypertension artérielle (hors grossesse)\u00a0?", type:"yn"},
   {n:7, text:"Avez-vous de l'hyperthyroïdie activement traitée\u00a0?", type:"yn"},
   {n:8, text:"Avez-vous un antécédent d'insuffisance cervicale ou de cerclage\u00a0?", type:"yn"},
   {n:9, text:"Êtes-vous connue pour un lupus ou une collagénose\u00a0?", type:"yn"},
@@ -345,7 +345,7 @@ const QUESTIONS = [
   {n:12, text:"Êtes-vous connue pour un asthme sévère\u00a0?", type:"yn"},
   {n:13, text:"Êtes-vous connue pour un VIH ou une hépatite avec charge virale détectable ou sous traitement\u00a0?", type:"yn"},
   {n:14, text:"Êtes-vous connue pour une maladie osseuse sévère ou une mobilité réduite\u00a0?", type:"yn"},
-  {n:15, text:"Êtes-vous connue pour une maladie inflammatoire de l'intestin (Crohn / colite ulcéreuse) sévère\u00a0?", type:"yn"},
+  {n:15, text:"Êtes-vous connue pour une maladie inflammatoire de l'intestin (Crohn / colite ulcéreuse) activement suivi en gastroentérologie\u00a0?", type:"yn"},
   {n:16, text:"Êtes-vous connue pour une maladie rénale (insuffisance rénale, glomérulonéphrite)\u00a0?", type:"yn"},
   {n:17, text:"Quel est votre poids\u00a0?", type:"num", unit:"kg", id:"poids"},
   {n:18, text:"Quelle est votre taille\u00a0?", type:"num", unit:"m", id:"taille", hint:"Par exemple\u00a0: 1.65"}
