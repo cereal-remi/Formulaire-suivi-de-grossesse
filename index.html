@@ -3,27 +3,23 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Formulaire de pré-évaluation de grossesse</title>
+<title>Formulaire de pré-évaluation de grossesse / Pregnancy Pre-Assessment Form</title>
 <style>
   :root {
-    --bg: #FAF8F5;
+    --bg: #F5F5F3;
     --panel: #FFFFFF;
     --ink: #2B2B33;
     --ink-soft: #5C5C68;
-    --line: #E4E0D8;
-    --accent: #8B6F5C;
-    --accent-soft: #F2E9E1;
-    --good: #4C7A5E;
-    --good-bg: #EAF3EC;
-    --warn: #B05A3A;
-    --warn-bg: #FBEDE6;
+    --line: #E0DDD8;
+    --accent: #5B7B8A;
+    --accent-soft: #EBF0F3;
+    --accent-dark: #3D5C6A;
+    --highlight: #E8E4DC;
     --radius: 10px;
     --serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
     --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
   }
-
   * { box-sizing: border-box; }
-
   body {
     margin: 0;
     background: var(--bg);
@@ -32,261 +28,233 @@
     line-height: 1.5;
     padding: 32px 16px 80px;
   }
+  .wrap { max-width: 660px; margin: 0 auto; }
 
-  .wrap {
-    max-width: 640px;
-    margin: 0 auto;
-  }
-
-  header.page-head {
-    margin-bottom: 28px;
-  }
-
+  /* ── Header ── */
+  header.page-head { margin-bottom: 24px; }
   header.page-head h1 {
     font-family: var(--serif);
     font-weight: 600;
-    font-size: 1.6rem;
+    font-size: 1.55rem;
     margin: 0 0 6px;
-    color: var(--ink);
   }
-
-  header.page-head p {
-    margin: 0;
-    color: var(--ink-soft);
-    font-size: 0.95rem;
-  }
+  header.page-head p { margin: 0; color: var(--ink-soft); font-size: 0.93rem; }
 
   .progress-track {
-    height: 4px;
-    background: var(--line);
-    border-radius: 4px;
-    margin-top: 18px;
-    overflow: hidden;
+    height: 4px; background: var(--line);
+    border-radius: 4px; margin-top: 16px; overflow: hidden;
   }
   .progress-fill {
-    height: 100%;
-    background: var(--accent);
-    width: 0%;
-    transition: width 0.3s ease;
+    height: 100%; background: var(--accent);
+    width: 0%; transition: width 0.3s ease;
   }
-  .progress-label {
-    font-size: 0.78rem;
-    color: var(--ink-soft);
-    margin-top: 6px;
-    text-align: right;
-  }
+  .progress-label { font-size: 0.78rem; color: var(--ink-soft); margin-top: 5px; text-align: right; }
 
+  /* ── Card & screens ── */
   .card {
     background: var(--panel);
     border: 1px solid var(--line);
     border-radius: var(--radius);
-    padding: 28px 26px;
+    padding: 30px 28px;
   }
+  .screen { display: none; }
+  .screen.active { display: block; }
 
-  .q-block { display: none; }
-  .q-block.active { display: block; }
+  /* ── Language picker ── */
+  .lang-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 28px;
+  }
+  .lang-btn {
+    border: 1.5px solid var(--line);
+    background: var(--panel);
+    border-radius: 10px;
+    padding: 28px 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: var(--sans);
+  }
+  .lang-btn:hover { border-color: var(--accent); background: var(--accent-soft); }
+  .lang-flag { font-size: 2.2rem; display: block; margin-bottom: 10px; }
+  .lang-name { font-size: 1.05rem; font-weight: 600; color: var(--ink); display: block; }
+  .lang-sub { font-size: 0.82rem; color: var(--ink-soft); display: block; margin-top: 2px; }
 
+  /* ── Intro ── */
+  .intro-title {
+    font-family: var(--serif);
+    font-size: 1.25rem;
+    margin: 0 0 14px;
+  }
+  .intro-body { color: var(--ink-soft); margin: 0 0 12px; font-size: 0.95rem; }
+  .intro-list {
+    color: var(--ink-soft); padding-left: 20px;
+    margin: 0 0 24px; font-size: 0.95rem;
+  }
+  .intro-list li { margin-bottom: 6px; }
+
+  /* ── Question block ── */
   .q-eyebrow {
-    font-size: 0.78rem;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    color: var(--accent);
-    font-weight: 600;
-    margin-bottom: 10px;
+    font-size: 0.75rem; letter-spacing: 0.05em;
+    text-transform: uppercase; color: var(--accent);
+    font-weight: 700; margin-bottom: 10px;
   }
-
   .q-text {
     font-family: var(--serif);
-    font-size: 1.2rem;
+    font-size: 1.18rem;
     line-height: 1.45;
-    margin: 0 0 22px;
+    margin: 0 0 24px;
     color: var(--ink);
   }
 
-  .choice-row {
-    display: flex;
-    gap: 12px;
-    margin-bottom: 8px;
-  }
-
+  /* ── Yes/No buttons ── */
+  .choice-row { display: flex; gap: 12px; margin-bottom: 8px; }
   .choice-btn {
-    flex: 1;
-    padding: 14px 16px;
+    flex: 1; padding: 14px 16px;
     border: 1.5px solid var(--line);
     background: var(--panel);
     border-radius: 8px;
-    font-size: 1rem;
-    font-family: var(--sans);
-    color: var(--ink);
-    cursor: pointer;
-    transition: all 0.15s ease;
-    text-align: center;
+    font-size: 1rem; font-family: var(--sans);
+    color: var(--ink); cursor: pointer;
+    transition: all 0.15s; text-align: center;
   }
   .choice-btn:hover { border-color: var(--accent); }
-  .choice-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   .choice-btn.selected {
     border-color: var(--accent);
     background: var(--accent-soft);
     font-weight: 600;
   }
 
+  /* ── Numeric input with unit toggle ── */
+  .unit-toggle {
+    display: flex; gap: 8px; margin-bottom: 12px;
+  }
+  .unit-btn {
+    padding: 7px 18px;
+    border: 1.5px solid var(--line);
+    background: var(--panel);
+    border-radius: 6px;
+    font-size: 0.88rem; font-family: var(--sans);
+    color: var(--ink-soft); cursor: pointer;
+    transition: all 0.15s;
+  }
+  .unit-btn.selected {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+    color: var(--ink); font-weight: 600;
+  }
+  .num-fields { display: flex; gap: 10px; flex-wrap: wrap; }
+  .num-field-wrap { display: flex; flex-direction: column; flex: 1; min-width: 100px; }
+  .num-field-wrap label {
+    font-size: 0.8rem; color: var(--ink-soft); margin-bottom: 4px;
+  }
   .num-input {
-    width: 100%;
-    padding: 14px 16px;
+    width: 100%; padding: 13px 14px;
     border: 1.5px solid var(--line);
     border-radius: 8px;
-    font-size: 1rem;
-    font-family: var(--sans);
+    font-size: 1rem; font-family: var(--sans);
     color: var(--ink);
-    margin-bottom: 4px;
   }
-  .num-input:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
-  .input-hint {
-    font-size: 0.82rem;
-    color: var(--ink-soft);
-    margin-top: 6px;
+  .num-input:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .input-hint { font-size: 0.8rem; color: var(--ink-soft); margin-top: 6px; }
+  .bmi-preview {
+    margin-top: 12px; padding: 10px 14px;
+    background: var(--highlight);
+    border-radius: 7px;
+    font-size: 0.9rem; color: var(--ink-soft);
   }
+  .bmi-preview strong { color: var(--ink); }
 
+  /* ── Navigation ── */
   .nav-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 26px;
+    display: flex; justify-content: space-between;
+    align-items: center; margin-top: 28px;
   }
-
   .btn-ghost {
-    background: none;
-    border: none;
-    color: var(--ink-soft);
-    font-size: 0.92rem;
-    cursor: pointer;
-    padding: 8px 4px;
+    background: none; border: none;
+    color: var(--ink-soft); font-size: 0.92rem;
+    cursor: pointer; padding: 8px 4px;
+    font-family: var(--sans);
   }
   .btn-ghost:hover { color: var(--ink); }
   .btn-ghost:disabled { opacity: 0; pointer-events: none; }
-
   .btn-primary {
-    background: var(--accent);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    padding: 12px 26px;
-    font-size: 0.95rem;
-    font-weight: 600;
-    cursor: pointer;
-    font-family: var(--sans);
+    background: var(--accent); color: white;
+    border: none; border-radius: 8px;
+    padding: 12px 28px;
+    font-size: 0.95rem; font-weight: 600;
+    cursor: pointer; font-family: var(--sans);
+    transition: background 0.15s;
   }
-  .btn-primary:hover { opacity: 0.92; }
-  .btn-primary:disabled { background: var(--line); cursor: not-allowed; }
+  .btn-primary:hover { background: var(--accent-dark); }
+  .btn-primary:disabled { background: var(--line); cursor: not-allowed; color: var(--ink-soft); }
 
-  /* Intro screen */
-  .intro h2 {
-    font-family: var(--serif);
-    font-size: 1.3rem;
-    margin: 0 0 14px;
-  }
-  .intro p { color: var(--ink-soft); margin: 0 0 14px; }
-  .intro ul { color: var(--ink-soft); padding-left: 20px; margin: 0 0 22px; }
-  .intro li { margin-bottom: 6px; }
-
-  /* Result screen */
-  .result-banner {
+  /* ── Result ── */
+  .result-header {
+    border: 1px solid var(--line);
     border-radius: var(--radius);
+    background: var(--highlight);
     padding: 24px 26px;
-    margin-bottom: 22px;
+    margin-bottom: 24px;
   }
-  .result-banner.gyneco { background: var(--warn-bg); border: 1px solid #E3C4B3; }
-  .result-banner.omni { background: var(--good-bg); border: 1px solid #C7DBCC; }
-
   .result-eyebrow {
-    font-size: 0.78rem;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    font-weight: 700;
-    margin-bottom: 8px;
+    font-size: 0.75rem; letter-spacing: 0.05em;
+    text-transform: uppercase; font-weight: 700;
+    color: var(--accent); margin-bottom: 10px;
   }
-  .gyneco .result-eyebrow { color: var(--warn); }
-  .omni .result-eyebrow { color: var(--good); }
-
   .result-message {
-    font-size: 0.97rem;
-    line-height: 1.6;
-    color: var(--ink);
-    margin: 0 0 14px;
+    font-size: 0.96rem; line-height: 1.65;
+    color: var(--ink); margin: 0 0 12px;
   }
   .result-message:last-child { margin-bottom: 0; }
-
   .omni-clinic-list {
-    margin: 0;
-    padding-left: 20px;
-    font-size: 0.92rem;
-    line-height: 1.7;
-    color: var(--ink);
+    margin: 8px 0 0; padding-left: 20px;
+    font-size: 0.91rem; line-height: 1.75; color: var(--ink);
   }
-  .omni-clinic-list li { margin-bottom: 4px; }
+  .omni-clinic-list li { margin-bottom: 6px; }
+  .omni-clinic-list a { color: var(--accent); }
 
   .summary-title {
     font-family: var(--serif);
-    font-size: 1.1rem;
+    font-size: 1.05rem;
     margin: 0 0 14px;
-    padding-top: 4px;
   }
-
   table.summary-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.9rem;
+    width: 100%; border-collapse: collapse; font-size: 0.88rem;
   }
   table.summary-table td {
-    padding: 10px 8px;
-    border-bottom: 1px solid var(--line);
-    vertical-align: top;
+    padding: 9px 8px; border-bottom: 1px solid var(--line); vertical-align: top;
   }
-  table.summary-table td:first-child {
-    color: var(--ink-soft);
-    width: 70%;
-    padding-right: 16px;
-  }
-  table.summary-table td:last-child {
-    font-weight: 600;
-    text-align: right;
-    white-space: nowrap;
-  }
-  .ans-oui { color: var(--warn); }
-  .ans-non { color: var(--ink); }
+  table.summary-table td:first-child { color: var(--ink-soft); width: 75%; padding-right: 16px; }
+  table.summary-table td:last-child { font-weight: 600; text-align: right; }
 
-  .action-row {
-    display: flex;
-    gap: 12px;
-    margin-top: 24px;
-  }
+  .action-row { display: flex; gap: 12px; margin-top: 24px; }
   .btn-secondary {
-    flex: 1;
-    background: var(--panel);
+    flex: 1; background: var(--panel);
     border: 1.5px solid var(--line);
-    color: var(--ink);
-    border-radius: 8px;
-    padding: 12px 18px;
-    font-size: 0.92rem;
-    font-weight: 600;
-    cursor: pointer;
-    font-family: var(--sans);
+    color: var(--ink); border-radius: 8px;
+    padding: 12px 16px; font-size: 0.9rem;
+    font-weight: 600; cursor: pointer; font-family: var(--sans);
   }
   .btn-secondary:hover { border-color: var(--accent); }
 
   footer.disclaimer {
-    margin-top: 24px;
-    font-size: 0.8rem;
-    color: var(--ink-soft);
-    text-align: center;
-    line-height: 1.5;
+    margin-top: 22px; font-size: 0.78rem;
+    color: var(--ink-soft); text-align: center; line-height: 1.5;
   }
 
+  @media (max-width: 480px) {
+    .card { padding: 22px 18px; }
+    .lang-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+    .action-row { flex-direction: column; }
+  }
   @media print {
     body { background: white; padding: 0; }
     .no-print { display: none !important; }
     .card { border: none; padding: 0; }
-    .result-banner.gyneco, .result-banner.omni { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    header.page-head { margin-bottom: 16px; }
   }
 </style>
 </head>
@@ -294,254 +262,521 @@
 <div class="wrap">
 
   <header class="page-head">
-    <h1>Pré-évaluation de suivi de grossesse</h1>
-    <p>Ce court questionnaire détermine si votre suivi doit être assuré par un médecin omnipraticien ou un gynécologue.</p>
+    <h1 id="page-title">Pré-évaluation · Pregnancy Pre-Assessment</h1>
+    <p id="page-sub">Formulaire de suivi de grossesse / Pregnancy follow-up form</p>
+    <div class="progress-track" id="prog-wrap" style="display:none">
+      <div class="progress-fill" id="prog-fill"></div>
+    </div>
+    <div class="progress-label" id="prog-label" style="display:none"></div>
   </header>
 
   <div class="card">
 
-    <!-- INTRO -->
-    <div class="q-block active intro" id="screen-intro">
-      <h2>Avant de commencer</h2>
-      <p>Vous êtes invité à répondre à 18 courtes questions sur vos antécédents médicaux et la grossesse en cours.</p>
-      <ul>
-        <li>Cela prend environ 3 minutes.</li>
-        <li>Aucune réponse n'est enregistrée ni transmise — tout reste sur votre appareil.</li>
-        <li>À la fin, vous recevrez le nom de la clinique à contacter ainsi qu'un résumé à imprimer ou sauvegarder pour votre premier rendez-vous.</li>
-      </ul>
-      <div class="nav-row">
-        <span></span>
-        <button class="btn-primary" onclick="goTo(1)">Commencer</button>
+    <!-- SCREEN 0: Language -->
+    <div class="screen active" id="s-lang">
+      <div class="q-eyebrow">Étape 1 / Step 1</div>
+      <p class="q-text" style="margin-bottom:8px">Choisissez votre langue / Choose your language</p>
+      <div class="lang-grid">
+        <button class="lang-btn" onclick="setLang('fr')">
+          <span class="lang-name">Français</span>
+          <span class="lang-sub">Continuer en français</span>
+        </button>
+        <button class="lang-btn" onclick="setLang('en')">
+          <span class="lang-name">English</span>
+          <span class="lang-sub">Continue in English</span>
+        </button>
       </div>
     </div>
 
-    <!-- QUESTIONS injected here by JS -->
-    <div id="questions-container"></div>
+    <!-- SCREEN 1: Intro -->
+    <div class="screen" id="s-intro">
+      <p class="intro-title" id="intro-title"></p>
+      <p class="intro-body" id="intro-body"></p>
+      <ul class="intro-list" id="intro-list"></ul>
+      <div class="nav-row">
+        <span></span>
+        <button class="btn-primary" onclick="goTo(1)" id="btn-start"></button>
+      </div>
+    </div>
 
-    <!-- RESULT -->
-    <div class="q-block" id="screen-result"></div>
+    <!-- SCREEN 2–22: Questions injected by JS -->
+    <div id="q-container"></div>
+
+    <!-- SCREEN result -->
+    <div class="screen" id="s-result"></div>
 
   </div>
 
-  <footer class="disclaimer no-print">
-    Cet outil offre une orientation générale et ne remplace pas l'avis d'un professionnel de la santé.
+  <footer class="disclaimer no-print" id="footer-disclaimer">
+    Ce formulaire offre une orientation générale et ne remplace pas l'avis d'un professionnel de la santé.<br>
+    This form provides general guidance and does not replace the advice of a healthcare professional.
   </footer>
 
 </div>
-
 <script>
-const QUESTIONS = [
-  {n:1, text:"Avez-vous eu une chirurgie bariatrique dans les 2 dernières années\u00a0?", type:"yn"},
-  {n:2, text:"Lors d'une grossesse antérieure, avez-vous déjà eu un diagnostic de pré-éclampsie avant 34 semaines de grossesse\u00a0?", type:"yn"},
-  {n:3, text:"Avez-vous déjà eu un diagnostic de pré-éclampsie ayant nécessité un traitement avec du sulfate de magnésium ou accompagné d'un HELLP\u00a0?", type:"yn"},
-  {n:4, text:"Avez-vous un diabète de type 1 ou un diabète de type 2\u00a0? (ne pas considérer le diabète gestationnel)", type:"yn"},
-  {n:5, text:"Si vous avez déjà fait une échographie pour votre grossesse actuelle, est-ce une grossesse gémellaire (jumeaux)\u00a0?", type:"yn"},
-  {n:6, text:"Êtes-vous connu pour de l'hypertension artérielle (hors grossesse)\u00a0?", type:"yn"},
-  {n:7, text:"Avez-vous de l'hyperthyroïdie activement traitée\u00a0?", type:"yn"},
-  {n:8, text:"Avez-vous un antécédent d'insuffisance cervicale ou de cerclage\u00a0?", type:"yn"},
-  {n:9, text:"Êtes-vous connue pour un lupus ou une collagénose\u00a0?", type:"yn"},
-  {n:10, text:"Êtes-vous connue pour une sclérose en plaques\u00a0?", type:"yn"},
-  {n:11, text:"Êtes-vous connue pour de l'insuffisance cardiaque\u00a0?", type:"yn"},
-  {n:12, text:"Êtes-vous connue pour un asthme sévère\u00a0?", type:"yn"},
-  {n:13, text:"Êtes-vous connue pour un VIH ou une hépatite avec charge virale détectable ou sous traitement\u00a0?", type:"yn"},
-  {n:14, text:"Êtes-vous connue pour une maladie osseuse sévère ou une mobilité réduite\u00a0?", type:"yn"},
-  {n:15, text:"Êtes-vous connue pour une maladie inflammatoire de l'intestin (Crohn / colite ulcéreuse) activement suivi en gastroentérologie\u00a0?", type:"yn"},
-  {n:16, text:"Êtes-vous connue pour une maladie rénale (insuffisance rénale, glomérulonéphrite)\u00a0?", type:"yn"},
-  {n:17, text:"Quel est votre poids\u00a0?", type:"num", unit:"kg", id:"poids"},
-  {n:18, text:"Quelle est votre taille\u00a0?", type:"num", unit:"m", id:"taille", hint:"Par exemple\u00a0: 1.65"}
-];
-
-// ---- Clinic info: replace placeholders below with real details ----
-const GYNECO_CLINIC = {
-  address: "[ADRESSE DE LA CLINIQUE DE GYNÉCOLOGIE]",
-  phone: "[NUMÉRO DE TÉLÉPHONE]"
+// ─────────────────────────────────────────────
+// CONTENT
+// ─────────────────────────────────────────────
+const T = {
+  fr: {
+    pageTitle: "Pré-évaluation de grossesse",
+    pageSub: "Formulaire de suivi de grossesse — Hôpital Pierre-Boucher",
+    introTitle: "Avant de commencer",
+    introBody: "Vous allez répondre à 21 questions sur vos antécédents médicaux et la grossesse en cours.",
+    introItems: [
+      "Cela prend environ 3 à 5 minutes.",
+      "Aucune réponse n'est enregistrée ni transmise — tout reste sur votre appareil.",
+      "À la fin, vous recevrez le nom de la clinique à contacter ainsi qu'un résumé à imprimer ou sauvegarder."
+    ],
+    btnStart: "Commencer",
+    btnNext: "Continuer",
+    btnBack: "← Précédent",
+    btnPrint: "Imprimer / Sauvegarder en PDF",
+    btnRestart: "Recommencer",
+    qLabel: "Question",
+    qOf: "sur",
+    oui: "Oui",
+    non: "Non",
+    weightLabel: "Poids",
+    heightLabel: "Taille",
+    unitKg: "Kilogrammes (kg)",
+    unitLb: "Livres (lb)",
+    unitM: "Mètres (m)",
+    unitFt: "Pieds et pouces (pi/po)",
+    weightPlaceholder: { kg: "ex. 72.5", lb: "ex. 160" },
+    heightPlaceholder: { m: "ex. 1.65", ft: { ft: "ex. 5", in: "ex. 6" } },
+    heightHint: { m: "Ex. : 1.65 pour 1 mètre 65", ft: "" },
+    feet: "Pieds", inches: "Pouces",
+    bmiLabel: "IMC calculé",
+    bmiWaiting: "Entrez votre poids et votre taille pour calculer votre IMC.",
+    summaryTitle: "Résumé de vos réponses",
+    summaryIMC: "Indice de masse corporelle (IMC)",
+    resultEyebrowGyneco: "Suivi recommandé : Gynécologie",
+    resultEyebrowOmni: "Suivi recommandé : Médecin de famille",
+    resultTextGyneco: `Merci d'avoir pris le temps de répondre à nos questions. À la suite de ce questionnaire, on identifie que votre grossesse nécessite un suivi par l'équipe de gynécologues.\nVous pouvez donc contacter la clinique de gynécologie de l'hôpital Pierre-Boucher (adresse à venir) afin d'obtenir un 1er rendez-vous.`,
+    resultTextOmni: `Merci d'avoir pris le temps de répondre à nos questions. À la suite de ce questionnaire, on vous confirme que votre suivi de grossesse peut être effectué par un omnipraticien effectuant des suivis de grossesse. Vous pouvez donc recontacter la clinique qui vous a fourni ce questionnaire afin d'obtenir un 1er rendez-vous.\n\nPour votre information, voici les cliniques des omnipraticiens effectuant des suivis de grossesse et des accouchements à Pierre-Boucher :`,
+    disclaimer: "Ce formulaire offre une orientation générale et ne remplace pas l'avis d'un professionnel de la santé.",
+    questions: [
+      "Avez-vous eu une chirurgie bariatrique dans les 2 dernières années\u00a0?",
+      "Lors d'une grossesse antérieure, avez-vous déjà eu un diagnostic de pré-éclampsie avant 34 semaines de grossesse\u00a0?",
+      "Avez-vous déjà eu un diagnostic de pré-éclampsie ayant nécessité un traitement avec du sulfate de magnésium ou accompagné d'un HELLP\u00a0?",
+      "Avez-vous un diabète de type 1 ou un diabète de type 2\u00a0? (ne pas considérer le diabète de grossesse)",
+      "Si vous avez déjà fait une échographie pour votre grossesse actuelle, est-ce une grossesse gémellaire (jumeaux)\u00a0?",
+      "Êtes-vous connue pour de l'hypertension artérielle (hors grossesse)\u00a0?",
+      "Avez-vous de l'hyperthyroïdie activement traitée\u00a0?",
+      "Avez-vous un antécédent d'incompétence de col ou de cerclage\u00a0?",
+      "Êtes-vous connue pour un lupus ou une collagénose\u00a0?",
+      "Êtes-vous connue pour une sclérose en plaques\u00a0?",
+      "Êtes-vous connue pour de l'insuffisance cardiaque\u00a0?",
+      "Êtes-vous connue pour un asthme sévère\u00a0?",
+      "Êtes-vous connue pour un VIH ou une hépatite avec charge virale détectable ou sous traitement\u00a0?",
+      "Êtes-vous connue pour une maladie osseuse sévère ou une mobilité réduite\u00a0?",
+      "Êtes-vous connue pour une maladie inflammatoire de l'intestin (Crohn / colite ulcéreuse) activement suivie en gastroentérologie\u00a0?",
+      "Êtes-vous connue pour une maladie rénale (insuffisance rénale, glomérulonéphrite)\u00a0?",
+      "Avez-vous déjà eu une thrombose (phlébite, embolie pulmonaire)\u00a0?",
+      "Prenez-vous des anticoagulants\u00a0?",
+      "Avez-vous déjà eu un accouchement prématuré avant 34 semaines de grossesse\u00a0?",
+      "Quel est votre poids\u00a0?",
+      "Quelle est votre taille\u00a0?"
+    ]
+  },
+  en: {
+    pageTitle: "Pregnancy Pre-Assessment",
+    pageSub: "Pregnancy follow-up form — Hôpital Pierre-Boucher",
+    introTitle: "Before you begin",
+    introBody: "You will answer 21 questions about your medical history and current pregnancy.",
+    introItems: [
+      "This takes approximately 3 to 5 minutes.",
+      "No answers are stored or transmitted — everything stays on your device.",
+      "At the end, you will receive the name of the clinic to contact, along with a summary you can print or save."
+    ],
+    btnStart: "Start",
+    btnNext: "Continue",
+    btnBack: "← Previous",
+    btnPrint: "Print / Save as PDF",
+    btnRestart: "Start over",
+    qLabel: "Question",
+    qOf: "of",
+    oui: "Yes",
+    non: "No",
+    weightLabel: "Weight",
+    heightLabel: "Height",
+    unitKg: "Kilograms (kg)",
+    unitLb: "Pounds (lb)",
+    unitM: "Metres (m)",
+    unitFt: "Feet and inches (ft/in)",
+    weightPlaceholder: { kg: "e.g. 72.5", lb: "e.g. 160" },
+    heightPlaceholder: { m: "e.g. 1.65", ft: { ft: "e.g. 5", in: "e.g. 6" } },
+    heightHint: { m: "E.g.: 1.65 for 1 metre 65", ft: "" },
+    feet: "Feet", inches: "Inches",
+    bmiLabel: "Calculated BMI",
+    bmiWaiting: "Enter your weight and height to calculate your BMI.",
+    summaryTitle: "Summary of your answers",
+    summaryIMC: "Body mass index (BMI)",
+    resultEyebrowGyneco: "Recommended follow-up: Gynecology",
+    resultEyebrowOmni: "Recommended follow-up: Family physician",
+    resultTextGyneco: `Thank you for taking the time to answer our questions. Based on this questionnaire, we have identified that your pregnancy requires specialized follow-up by the gynecology team.\nYou may contact the gynecology clinic at Hôpital Pierre-Boucher (address to come) to book your first appointment.`,
+    resultTextOmni: `Thank you for taking the time to answer our questions. Based on this questionnaire, we can confirm that your pregnancy follow-up can be provided by a family physician who performs obstetric care. Please contact the clinic that provided you with this questionnaire to book your first appointment.\n\nFor your information, here are the family medicine clinics that provide pregnancy and delivery follow-up at Pierre-Boucher:`,
+    disclaimer: "This form provides general guidance and does not replace the advice of a healthcare professional.",
+    questions: [
+      "Have you had bariatric surgery in the past 2 years?",
+      "In a previous pregnancy, have you ever been diagnosed with pre-eclampsia before 34 weeks of pregnancy?",
+      "Have you ever been diagnosed with pre-eclampsia requiring treatment with magnesium sulfate or accompanied by HELLP syndrome?",
+      "Do you have type 1 or type 2 diabetes? (do not include gestational diabetes)",
+      "If you have already had an ultrasound for your current pregnancy, is it a twin pregnancy (twins)?",
+      "Do you have a known history of high blood pressure (outside of pregnancy)?",
+      "Do you have actively treated hyperthyroidism?",
+      "Do you have a history of cervical incompetence or cerclage?",
+      "Do you have a known history of lupus or a collagen vascular disease?",
+      "Do you have a known history of multiple sclerosis?",
+      "Do you have a known history of heart failure?",
+      "Do you have a known history of severe asthma?",
+      "Do you have known HIV or hepatitis with a detectable viral load or currently on treatment?",
+      "Do you have a known history of severe bone disease or reduced mobility?",
+      "Do you have a known history of inflammatory bowel disease (Crohn's/ulcerative colitis) actively followed by a gastroenterologist?",
+      "Do you have a known history of kidney disease (renal insufficiency, glomerulonephritis)?",
+      "Have you ever had a thrombosis (phlebitis, pulmonary embolism)?",
+      "Are you currently taking anticoagulants?",
+      "Have you ever had a preterm birth before 34 weeks of pregnancy?",
+      "What is your weight?",
+      "What is your height?"
+    ]
+  }
 };
 
-const OMNI_CLINICS = [
-  { name: "GMF l'Autre Maison (centre de périnatalité)", city: "Longueuil", phone: "450 332-9833" },
-  { name: "GMF-U des Montérégiennes", city: "Boucherville", phone: "450 468-5511" },
-  { name: "GMF-U de Saint-Hubert", city: "Longueuil", phone: "450 443-7400" },
-  { name: "Clinique médicale 2200 (Berger)", city: "Longueuil", phone: "450 651-7331" },
-  { name: "Clinique médicale Sainte-Julie", city: "Sainte-Julie", phone: "450 649-1593" },
-  { name: "Clinique familiale des Hauts-Bois (GMF Marguerite D'Youville)", city: "Sainte-Julie", phone: "450 649-2490" }
-];
-// ---------------------------------------------------------------------
+const OMNI_CLINICS = {
+  fr: [
+    { name: "GMF l'Autre Maison (centre de périnatalité)", city: "Longueuil", phone: "450 332-9833", link: "https://lautremaison.ca/2020/formulaire-premier-rv-grossese/", linkLabel: "Formulaire de premier rendez-vous de grossesse" },
+    { name: "GMF-U des Montérégiennes", city: "Boucherville", phone: "450 468-5511", email: "gmfu.monteregiennes.cisssme16@ssss.gouv.qc.ca" },
+    { name: "GMF-U de Saint-Hubert", city: "Longueuil", phone: "450 443-7407 poste 5", email: "sabrina.turner.cisssmc16@ssss.gouv.qc.ca" },
+    { name: "Clinique médicale 2200 (Berger)", city: "Longueuil", phone: "450 651-7331" },
+    { name: "Clinique médicale Sainte-Julie", city: "Sainte-Julie", phone: "450 649-1593" },
+    { name: "Clinique familiale des Hauts-Bois (GMF Marguerite D'Youville)", city: "Sainte-Julie", phone: "450 649-2490 poste 4", email: "tdubemberry@gmfmd.ca" }
+  ],
+  en: [
+    { name: "GMF l'Autre Maison (Perinatal Centre)", city: "Longueuil", phone: "450 332-9833", link: "https://lautremaison.ca/2020/formulaire-premier-rv-grossese/", linkLabel: "First pregnancy appointment form" },
+    { name: "GMF-U des Montérégiennes", city: "Boucherville", phone: "450 468-5511", email: "gmfu.monteregiennes.cisssme16@ssss.gouv.qc.ca" },
+    { name: "GMF-U de Saint-Hubert", city: "Longueuil", phone: "450 443-7407 ext. 5", email: "sabrina.turner.cisssmc16@ssss.gouv.qc.ca" },
+    { name: "Clinique médicale 2200 (Berger)", city: "Longueuil", phone: "450 651-7331" },
+    { name: "Clinique médicale Sainte-Julie", city: "Sainte-Julie", phone: "450 649-1593" },
+    { name: "Clinique familiale des Hauts-Bois (GMF Marguerite D'Youville)", city: "Sainte-Julie", phone: "450 649-2490 ext. 4", email: "tdubemberry@gmfmd.ca" }
+  ]
+};
 
-let current = 0; // 0 = intro
-const answers = {};
-const totalSteps = QUESTIONS.length;
+// ─────────────────────────────────────────────
+// STATE
+// ─────────────────────────────────────────────
+let lang = null;
+let current = 0; // 0=lang, -1=intro, 1–21=questions, 22=result
+const TOTAL = 21;
+const answers = {}; // 1–19: 'oui'|'non', 20: {val, unit}, 21: {val, unit, ft, inch}
+let weightUnit = 'kg';
+let heightUnit = 'm';
+
+// ─────────────────────────────────────────────
+// INIT
+// ─────────────────────────────────────────────
+function setLang(l) {
+  lang = l;
+  const t = T[lang];
+  document.documentElement.lang = lang;
+  document.getElementById('page-title').textContent = t.pageTitle;
+  document.getElementById('page-sub').textContent = t.pageSub;
+  document.getElementById('intro-title').textContent = t.introTitle;
+  document.getElementById('intro-body').textContent = t.introBody;
+  const ul = document.getElementById('intro-list');
+  ul.innerHTML = t.introItems.map(i => `<li>${i}</li>`).join('');
+  document.getElementById('btn-start').textContent = t.btnStart;
+  document.getElementById('footer-disclaimer').textContent = t.disclaimer;
+  buildQuestions();
+  showScreen('s-intro');
+  current = -1;
+}
 
 function buildQuestions() {
-  const container = document.getElementById('questions-container');
-  QUESTIONS.forEach((q, idx) => {
-    const block = document.createElement('div');
-    block.className = 'q-block';
-    block.id = 'screen-' + (idx + 1);
+  const t = T[lang];
+  const container = document.getElementById('q-container');
+  container.innerHTML = '';
+
+  for (let n = 1; n <= TOTAL; n++) {
+    const div = document.createElement('div');
+    div.className = 'screen';
+    div.id = 's-q' + n;
 
     let inputHtml = '';
-    if (q.type === 'yn') {
+    if (n <= 19) {
       inputHtml = `
         <div class="choice-row">
-          <button type="button" class="choice-btn" data-val="oui" onclick="selectYN(${q.n}, 'oui', this)">Oui</button>
-          <button type="button" class="choice-btn" data-val="non" onclick="selectYN(${q.n}, 'non', this)">Non</button>
+          <button type="button" class="choice-btn" onclick="selectYN(${n},'oui',this)">${t.oui}</button>
+          <button type="button" class="choice-btn" onclick="selectYN(${n},'non',this)">${t.non}</button>
         </div>`;
-    } else if (q.type === 'num') {
+    } else if (n === 20) {
       inputHtml = `
-        <input type="number" step="0.01" inputmode="decimal" class="num-input" id="input-${q.id}"
-          oninput="recordNum(${q.n}, '${q.id}', this.value)" placeholder="${q.unit}">
-        ${q.hint ? `<div class="input-hint">${q.hint}</div>` : ''}`;
+        <div class="unit-toggle">
+          <button type="button" class="unit-btn selected" id="w-kg" onclick="setWeightUnit('kg')">${t.unitKg}</button>
+          <button type="button" class="unit-btn" id="w-lb" onclick="setWeightUnit('lb')">${t.unitLb}</button>
+        </div>
+        <div class="num-fields">
+          <div class="num-field-wrap">
+            <label id="w-label">${t.weightLabel} (kg)</label>
+            <input type="number" step="0.1" inputmode="decimal" class="num-input" id="input-weight"
+              placeholder="${t.weightPlaceholder.kg}" oninput="recordWeight(this.value)">
+          </div>
+        </div>
+        <div class="bmi-preview" id="bmi-preview">${t.bmiWaiting}</div>`;
+    } else if (n === 21) {
+      inputHtml = `
+        <div class="unit-toggle">
+          <button type="button" class="unit-btn selected" id="h-m" onclick="setHeightUnit('m')">${t.unitM}</button>
+          <button type="button" class="unit-btn" id="h-ft" onclick="setHeightUnit('ft')">${t.unitFt}</button>
+        </div>
+        <div id="height-m-wrap" class="num-fields">
+          <div class="num-field-wrap">
+            <label>${t.heightLabel} (m)</label>
+            <input type="number" step="0.01" inputmode="decimal" class="num-input" id="input-height-m"
+              placeholder="${t.heightPlaceholder.m}" oninput="recordHeightM(this.value)">
+          </div>
+        </div>
+        <div id="height-ft-wrap" class="num-fields" style="display:none">
+          <div class="num-field-wrap">
+            <label>${t.feet}</label>
+            <input type="number" step="1" inputmode="numeric" class="num-input" id="input-height-ft"
+              placeholder="${t.heightPlaceholder.ft.ft}" oninput="recordHeightFt()">
+          </div>
+          <div class="num-field-wrap">
+            <label>${t.inches}</label>
+            <input type="number" step="0.5" inputmode="decimal" class="num-input" id="input-height-in"
+              placeholder="${t.heightPlaceholder.ft.in}" oninput="recordHeightFt()">
+          </div>
+        </div>
+        <div class="bmi-preview" id="bmi-preview2">${T[lang].bmiWaiting}</div>`;
     }
 
-    block.innerHTML = `
-      <div class="q-eyebrow">Question ${q.n} sur ${totalSteps}</div>
-      <p class="q-text">${q.text}</p>
+    div.innerHTML = `
+      <div class="q-eyebrow">${t.qLabel} ${n} ${t.qOf} ${TOTAL}</div>
+      <p class="q-text">${t.questions[n-1]}</p>
       ${inputHtml}
       <div class="nav-row">
-        <button class="btn-ghost" onclick="goTo(${idx})">&larr; Précédent</button>
-        <button class="btn-primary" id="next-${q.n}" onclick="goTo(${idx + 2})" disabled>Continuer</button>
-      </div>
-    `;
-    container.appendChild(block);
+        <button class="btn-ghost" onclick="goBack(${n})">${t.btnBack}</button>
+        <button class="btn-primary" id="next-${n}" onclick="goTo(${n+1})" disabled>${t.btnNext}</button>
+      </div>`;
+    container.appendChild(div);
+  }
+}
+
+// ─────────────────────────────────────────────
+// NAVIGATION
+// ─────────────────────────────────────────────
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function updateProgress(n) {
+  const wrap = document.getElementById('prog-wrap');
+  const fill = document.getElementById('prog-fill');
+  const label = document.getElementById('prog-label');
+  if (n < 1 || n > TOTAL) { wrap.style.display='none'; label.style.display='none'; return; }
+  wrap.style.display='block'; label.style.display='block';
+  fill.style.width = Math.round((n/TOTAL)*100) + '%';
+  label.textContent = `${n} / ${TOTAL}`;
+}
+
+function goTo(n) {
+  if (n === 0) { showScreen('s-lang'); current=0; updateProgress(0); return; }
+  if (n === -1 || n === 'intro') { showScreen('s-intro'); current=-1; updateProgress(0); return; }
+  if (n > TOTAL) { renderResult(); showScreen('s-result'); current=TOTAL+1; updateProgress(0); return; }
+  showScreen('s-q'+n);
+  current = n;
+  updateProgress(n);
+  // Restore selected state for Y/N
+  if (n <= 19 && answers[n]) {
+    const scr = document.getElementById('s-q'+n);
+    scr.querySelectorAll('.choice-btn').forEach(b => {
+      b.classList.toggle('selected', b.textContent === T[lang][answers[n]]);
+    });
+  }
+}
+
+function goBack(n) {
+  if (n === 1) goTo('intro');
+  else goTo(n-1);
+}
+
+// ─────────────────────────────────────────────
+// ANSWER RECORDING
+// ─────────────────────────────────────────────
+function selectYN(n, val, btn) {
+  answers[n] = val;
+  const row = btn.parentElement;
+  row.querySelectorAll('.choice-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  document.getElementById('next-'+n).disabled = false;
+}
+
+// Weight
+function setWeightUnit(unit) {
+  weightUnit = unit;
+  const t = T[lang];
+  document.getElementById('w-kg').classList.toggle('selected', unit==='kg');
+  document.getElementById('w-lb').classList.toggle('selected', unit==='lb');
+  document.getElementById('w-label').textContent = t.weightLabel + ' (' + (unit==='kg'?'kg':'lb') + ')';
+  const inp = document.getElementById('input-weight');
+  inp.placeholder = t.weightPlaceholder[unit];
+  inp.value = '';
+  answers[20] = null;
+  document.getElementById('next-20').disabled = true;
+  refreshBMI();
+}
+
+function recordWeight(val) {
+  const num = parseFloat(val);
+  if (!val || isNaN(num) || num <= 0) { answers[20] = null; document.getElementById('next-20').disabled=true; refreshBMI(); return; }
+  const kg = weightUnit === 'kg' ? num : num * 0.453592;
+  answers[20] = { raw: num, unit: weightUnit, kg };
+  document.getElementById('next-20').disabled = false;
+  refreshBMI();
+}
+
+// Height
+function setHeightUnit(unit) {
+  heightUnit = unit;
+  document.getElementById('h-m').classList.toggle('selected', unit==='m');
+  document.getElementById('h-ft').classList.toggle('selected', unit==='ft');
+  document.getElementById('height-m-wrap').style.display = unit==='m' ? '' : 'none';
+  document.getElementById('height-ft-wrap').style.display = unit==='ft' ? '' : 'none';
+  document.getElementById('input-height-m').value = '';
+  document.getElementById('input-height-ft').value = '';
+  document.getElementById('input-height-in').value = '';
+  answers[21] = null;
+  document.getElementById('next-21').disabled = true;
+  refreshBMI();
+}
+
+function recordHeightM(val) {
+  const num = parseFloat(val);
+  if (!val || isNaN(num) || num <= 0) { answers[21]=null; document.getElementById('next-21').disabled=true; refreshBMI(); return; }
+  answers[21] = { raw: num, unit: 'm', m: num };
+  document.getElementById('next-21').disabled = false;
+  refreshBMI();
+}
+
+function recordHeightFt() {
+  const ft = parseFloat(document.getElementById('input-height-ft').value) || 0;
+  const inch = parseFloat(document.getElementById('input-height-in').value) || 0;
+  if (ft <= 0 && inch <= 0) { answers[21]=null; document.getElementById('next-21').disabled=true; refreshBMI(); return; }
+  const totalInches = ft*12 + inch;
+  const m = totalInches * 0.0254;
+  answers[21] = { ft, inch, unit: 'ft', m };
+  document.getElementById('next-21').disabled = false;
+  refreshBMI();
+}
+
+function refreshBMI() {
+  const t = T[lang];
+  const bmi = computeBMI();
+  const msg = bmi !== null
+    ? `${t.bmiLabel} : <strong>${bmi.toFixed(1)}</strong>`
+    : t.bmiWaiting;
+  ['bmi-preview','bmi-preview2'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.innerHTML = msg;
   });
 }
 
-function selectYN(qn, val, btnEl) {
-  answers[qn] = val;
-  const row = btnEl.parentElement;
-  row.querySelectorAll('.choice-btn').forEach(b => b.classList.remove('selected'));
-  btnEl.classList.add('selected');
-  document.getElementById('next-' + qn).disabled = false;
-}
-
-function recordNum(qn, id, val) {
-  const num = parseFloat(val);
-  answers[qn] = isNaN(num) ? null : num;
-  document.getElementById('next-' + qn).disabled = (val === '' || isNaN(num) || num <= 0);
-}
-
-function updateProgress() {
-  let bar = document.getElementById('progress-bar-fill');
-  let label = document.getElementById('progress-bar-label');
-  if (current === 0 || current > totalSteps) {
-    if (bar) bar.parentElement.parentElement.style.display = 'none';
-    return;
-  }
-  if (!bar) return;
-  bar.parentElement.parentElement.style.display = 'block';
-  const pct = Math.round((current / totalSteps) * 100);
-  bar.style.width = pct + '%';
-  label.textContent = `${current} / ${totalSteps}`;
-}
-
-function goTo(stepIndex) {
-  document.querySelectorAll('.q-block').forEach(el => el.classList.remove('active'));
-  if (stepIndex === 0) {
-    document.getElementById('screen-intro').classList.add('active');
-    current = 0;
-  } else if (stepIndex <= totalSteps) {
-    document.getElementById('screen-' + stepIndex).classList.add('active');
-    current = stepIndex;
-  } else {
-    renderResult();
-    document.getElementById('screen-result').classList.add('active');
-    current = totalSteps + 1;
-  }
-  updateProgress();
-  window.scrollTo({top: 0, behavior: 'smooth'});
-}
-
 function computeBMI() {
-  const poids = answers[17];
-  const taille = answers[18];
-  if (!poids || !taille || taille <= 0) return null;
-  return poids / (taille * taille);
+  if (!answers[20] || !answers[21]) return null;
+  const kg = answers[20].kg;
+  const m = answers[21].m;
+  if (!kg || !m || m <= 0) return null;
+  return kg / (m * m);
 }
 
+// ─────────────────────────────────────────────
+// TRIAGE LOGIC
+// ─────────────────────────────────────────────
 function determineClinic() {
-  for (let i = 1; i <= 16; i++) {
-    if (answers[i] === 'oui') return 'gyneco';
-  }
+  for (let i = 1; i <= 19; i++) if (answers[i] === 'oui') return 'gyneco';
   const bmi = computeBMI();
   if (bmi !== null && bmi >= 45) return 'gyneco';
   return 'omni';
 }
 
+// ─────────────────────────────────────────────
+// RESULT RENDERING
+// ─────────────────────────────────────────────
 function renderResult() {
+  const t = T[lang];
   const clinicKey = determineClinic();
   const bmi = computeBMI();
   const bmiDisplay = bmi !== null ? bmi.toFixed(1) : 'N/D';
-  const today = new Date().toLocaleDateString('fr-CA', {year:'numeric', month:'long', day:'numeric'});
+  const today = new Date().toLocaleDateString(lang === 'fr' ? 'fr-CA' : 'en-CA', {year:'numeric', month:'long', day:'numeric'});
 
-  const bannerClass = clinicKey === 'gyneco' ? 'gyneco' : 'omni';
-
-  let bannerInner = '';
+  // Result header
+  let bannerHtml = '';
   if (clinicKey === 'gyneco') {
-    bannerInner = `
-      <div class="result-eyebrow">Suivi recommandé : Gynécologie</div>
-      <p class="result-message">Merci d'avoir pris le temps de répondre à nos questions. À la suite de ce questionnaire, on identifie que votre grossesse nécessite un suivi par l'équipe de gynécologues. Vous pouvez donc contacter la clinique de gynécologie de l'hôpital Pierre-Boucher (${GYNECO_CLINIC.address}, ${GYNECO_CLINIC.phone}) afin d'obtenir un 1er rendez-vous.</p>
-    `;
+    const paras = t.resultTextGyneco.split('\n').filter(p=>p.trim());
+    bannerHtml = `
+      <div class="result-eyebrow">${t.resultEyebrowGyneco}</div>
+      ${paras.map(p=>`<p class="result-message">${p}</p>`).join('')}`;
   } else {
-    const clinicListHtml = OMNI_CLINICS.map(c =>
-      `<li><strong>${c.name}</strong> à ${c.city} — Tél. : ${c.phone}</li>`
-    ).join('');
-    bannerInner = `
-      <div class="result-eyebrow">Suivi recommandé : Omnipraticien</div>
-      <p class="result-message">Merci d'avoir pris le temps de répondre à nos questions. À la suite de ce questionnaire, on vous confirme que votre suivi de grossesse peut être effectué par un omnipraticien effectuant des suivis de grossesse. Vous pouvez donc recontacter la clinique qui vous a fourni ce questionnaire afin d'obtenir un 1er rendez-vous.</p>
-      <p class="result-message">Pour votre information, voici les cliniques des omnipraticiens effectuant des suivis de grossesse et des accouchements à Pierre-Boucher\u00a0:</p>
-      <ul class="omni-clinic-list">${clinicListHtml}</ul>
-    `;
+    const paras = t.resultTextOmni.split('\n').filter(p=>p.trim());
+    const clinics = OMNI_CLINICS[lang];
+    const listItems = clinics.map(c => {
+      let line = `<strong>${c.name}</strong> à ${c.city} — Tél. : ${c.phone}`;
+      if (lang === 'en') line = `<strong>${c.name}</strong> – ${c.city} — Tel.: ${c.phone}`;
+      if (c.email) line += `, <a href="mailto:${c.email}">${c.email}</a>`;
+      if (c.link) line += `, <a href="${c.link}" target="_blank">${c.linkLabel}</a>`;
+      return `<li>${line}</li>`;
+    }).join('');
+    bannerHtml = `
+      <div class="result-eyebrow">${t.resultEyebrowOmni}</div>
+      ${paras.map(p=>`<p class="result-message">${p}</p>`).join('')}
+      <ul class="omni-clinic-list">${listItems}</ul>`;
   }
 
+  // Summary table
   let rows = '';
-  QUESTIONS.forEach(q => {
-    if (q.type === 'yn') {
-      const val = answers[q.n] === 'oui' ? 'Oui' : 'Non';
-      const cls = answers[q.n] === 'oui' ? 'ans-oui' : 'ans-non';
-      rows += `<tr><td>${q.n}. ${q.text}</td><td class="${cls}">${val}</td></tr>`;
-    }
-  });
-  rows += `<tr><td>17. Indice de masse corporelle (IMC)</td><td>${bmiDisplay}</td></tr>`;
+  for (let i=1; i<=19; i++) {
+    const val = answers[i] === 'oui' ? t.oui : t.non;
+    rows += `<tr><td>${i}. ${T[lang].questions[i-1]}</td><td>${val}</td></tr>`;
+  }
+  // Weight
+  const wVal = answers[20];
+  const wDisplay = wVal ? (wVal.unit==='kg' ? `${wVal.raw} kg` : `${wVal.raw} lb`) : '—';
+  rows += `<tr><td>20. ${t.questions[19]}</td><td>${wDisplay}</td></tr>`;
+  // Height
+  const hVal = answers[21];
+  const hDisplay = hVal ? (hVal.unit==='m' ? `${hVal.raw} m` : `${hVal.ft} pi ${hVal.inch} po`) : '—';
+  rows += `<tr><td>21. ${t.questions[20]}</td><td>${hDisplay}</td></tr>`;
+  // BMI
+  rows += `<tr><td>${t.summaryIMC}</td><td>${bmiDisplay}</td></tr>`;
 
-  const resultScreen = document.getElementById('screen-result');
-  resultScreen.innerHTML = `
-    <div class="result-banner ${bannerClass}">
-      ${bannerInner}
-    </div>
-
-    <p class="summary-title">Résumé de vos réponses — ${today}</p>
-    <table class="summary-table">
-      ${rows}
-    </table>
-
+  document.getElementById('s-result').innerHTML = `
+    <div class="result-header">${bannerHtml}</div>
+    <p class="summary-title">${t.summaryTitle} — ${today}</p>
+    <table class="summary-table">${rows}</table>
     <div class="action-row no-print">
-      <button class="btn-secondary" onclick="window.print()">Imprimer / Sauvegarder en PDF</button>
-      <button class="btn-secondary" onclick="restart()">Recommencer</button>
-    </div>
-  `;
+      <button class="btn-secondary" onclick="window.print()">${t.btnPrint}</button>
+      <button class="btn-secondary" onclick="restart()">${t.btnRestart}</button>
+    </div>`;
 }
 
+// ─────────────────────────────────────────────
+// RESTART
+// ─────────────────────────────────────────────
 function restart() {
   for (const k in answers) delete answers[k];
-  document.querySelectorAll('.choice-btn').forEach(b => b.classList.remove('selected'));
-  document.querySelectorAll('input[type="number"]').forEach(i => i.value = '');
-  document.querySelectorAll('[id^="next-"]').forEach(b => b.disabled = true);
-  goTo(0);
+  weightUnit = 'kg'; heightUnit = 'm';
+  lang = null;
+  document.getElementById('q-container').innerHTML = '';
+  document.getElementById('s-result').innerHTML = '';
+  document.getElementById('page-title').textContent = "Pré-évaluation · Pregnancy Pre-Assessment";
+  document.getElementById('page-sub').textContent = "Formulaire de suivi de grossesse / Pregnancy follow-up form";
+  showScreen('s-lang');
+  updateProgress(0);
 }
-
-// Inject progress bar into header
-document.addEventListener('DOMContentLoaded', () => {
-  const head = document.querySelector('header.page-head');
-  const progWrap = document.createElement('div');
-  progWrap.innerHTML = `
-    <div class="progress-track"><div class="progress-fill" id="progress-bar-fill"></div></div>
-    <div class="progress-label" id="progress-bar-label">0 / ${totalSteps}</div>
-  `;
-  progWrap.style.display = 'none';
-  head.appendChild(progWrap);
-  buildQuestions();
-  updateProgress();
-});
 </script>
-
 </body>
 </html>
